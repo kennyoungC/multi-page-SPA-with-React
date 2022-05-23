@@ -95,6 +95,5 @@ export async function getAllComments(quoteId) {
 
     transformedComments.push(commentObj)
   }
-
   return transformedComments
 }
