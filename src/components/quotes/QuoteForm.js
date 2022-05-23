@@ -1,13 +1,13 @@
 import { useRef } from "react"
-import { useState } from "react"
-import { Prompt } from "react-router-dom"
+// import { useState } from "react"
+// import { Prompt } from "react-router-dom"
 
 import Card from "../UI/Card"
 import LoadingSpinner from "../UI/LoadingSpinner"
 import classes from "./QuoteForm.module.css"
 
 const QuoteForm = (props) => {
-  const [isUserEntereringForm, setIsUserEntereringForm] = useState(false)
+  // const [isUserEntereringForm, setIsUserEntereringForm] = useState(false)
   const authorInputRef = useRef()
   const textInputRef = useRef()
 
@@ -18,26 +18,27 @@ const QuoteForm = (props) => {
     const enteredText = textInputRef.current.value
 
     // optional: Could validate here
+    if (enteredAuthor.trim() === "" && enteredText.trim() === "") return
 
     props.onAddQuote({ author: enteredAuthor, text: enteredText })
   }
-  const onFocusHandler = () => {
-    setIsUserEntereringForm(true)
-  }
-  const finishEntering = () => {
-    setIsUserEntereringForm(false)
-  }
+  // const onFocusHandler = () => {
+  //   setIsUserEntereringForm(true)
+  // }
+  // const finishEntering = () => {
+  //   setIsUserEntereringForm(false)
+  // }
   return (
     <>
-      <Prompt
+      {/* <Prompt
         when={isUserEntereringForm}
         message={(location) =>
           "Are you sure you want to leave this page? All DATA WILL BE LOST!!"
         }
-      />
+      /> */}
       <Card>
         <form
-          onFocus={onFocusHandler}
+          // onFocus={onFocusHandler}
           className={classes.form}
           onSubmit={submitFormHandler}
         >
@@ -56,7 +57,10 @@ const QuoteForm = (props) => {
             <textarea id="text" rows="5" ref={textInputRef}></textarea>
           </div>
           <div className={classes.actions}>
-            <button onClick={finishEntering} className="btn">
+            <button
+              // onClick={finishEntering}
+              className="btn"
+            >
               Add Quote
             </button>
           </div>

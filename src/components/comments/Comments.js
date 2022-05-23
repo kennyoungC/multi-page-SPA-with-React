@@ -7,12 +7,12 @@ import useHttp from "../../hooks/use-http"
 import { getAllComments } from "../../lib/api"
 import LoadingSpinner from "../UI/LoadingSpinner"
 import CommentsList from "./CommentsList"
-import { useRouteMatch } from "react-router-dom"
 
 const Comments = () => {
   const [isAddingComment, setIsAddingComment] = useState(false)
-  const match = useRouteMatch()
-  const quoteId = match.path.split("/")[2]
+  const params = useParams()
+
+  const { quoteId } = params
 
   const { sendRequest, status, data: loadedComments } = useHttp(getAllComments)
 

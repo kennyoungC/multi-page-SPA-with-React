@@ -1,30 +1,49 @@
-import { Route, Switch, Redirect } from "react-router-dom"
-import AllQuotes from "./Pages/AllQuotes"
-import QuoteDetails from "./Pages/QuoteDetails"
-import NewQuote from "./Pages/NewQuotes"
+import React, { Suspense } from "react"
+import { Route, Routes, Navigate, Link } from "react-router-dom"
+
+// import AllQuotes from "./Pages/AllQuotes"
+// import QuoteDetail from "./Pages/QuoteDetail"
+// import NewQuotes from "../src/Pages/NewQuotes"
+// import NotFound from "./Pages/NotFound"
 import Layout from "./components/layout/Layout"
-import NotFound from "./Pages/NotFound"
+import Comments from "./components/comments/Comments"
+import LoadingSpinner from "./components/UI/LoadingSpinner"
+
+const AllQuotes = React.lazy(() => import("./Pages/AllQuotes"))
+const QuoteDetail = React.lazy(() => import("./Pages/QuoteDetail"))
+const NotFound = React.lazy(() => import("./Pages/NotFound"))
+const NewQuotes = React.lazy(() => import("../src/Pages/NewQuotes"))
 
 function App() {
   return (
     <Layout>
-      <Switch>
-        <Route path="/" exact>
-          <Redirect to="/quotes" />
-        </Route>
-        <Route path="/quotes" exact>
-          <AllQuotes />
-        </Route>
-        <Route path="/quotes/:quoteId">
-          <QuoteDetails />
-        </Route>
-        <Route path="/new-quotes">
-          <NewQuote />
-        </Route>
-        <Route path="*">
-          <NotFound />
-        </Route>
-      </Switch>
+      <Suspense
+        fallback={
+          <div className="centered">
+            <LoadingSpinner />
+          </div>
+        }
+      >
+        <Routes>
+          <Route path="/" element={<Navigate replace to="/quotes" />} />
+          <Route path="/quotes" element={<AllQuotes />} />
+          <Route path="/quotes/:quoteId" element={<QuoteDetail />}>
+            <Route
+              path=""
+              element={
+                <div className="centered">
+                  <Link className="btn--flat" to={`comments`}>
+                    Load Comments
+                  </Link>
+                </div>
+              }
+            />
+            <Route path={`comments`} element={<Comments />} />
+          </Route>
+          <Route path="/new-quote" element={<NewQuotes />} />
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </Suspense>
     </Layout>
   )
 }
